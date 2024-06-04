@@ -146,7 +146,7 @@ const updateProductDetails = async (req, res) => {
 
 const userPaymentDetails = async (req, res) => {
     const { id } = req.params;
-    const findPayment = await Payment.find({ user: id })    
+    const findPayment = await Payment.find({ user: id })
     if (findPayment) {
         try {
             res.send(findPayment)
@@ -160,9 +160,13 @@ const userPaymentDetails = async (req, res) => {
 }
 
 const addProduct = async (req, res) => {
-    const { name, brand, price, category, image, rating, type, author, description, gender } = req.body;
+    const { name, brand, price, category, image, rating, type, author, description } = req.body;
     try {
-        await Product.create({ name, brand, price, category, image, rating, type, author, description, gender })
+        let productFindOne = await Product.find({ name: name });
+        if (productFindOne.id) {
+            return res.status(400).json({ message: "Sản phẩm đã tồn tại" });
+        }
+        await Product.create({ name, brand, price, category, image, rating, type, author, description })
         success = true
         res.send(success)
 
@@ -189,10 +193,25 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+
+const getProducts = async (req, res) => {
+    const findProduct = await Product.find()
+    if (findProduct) {
+        try {
+            res.send(findProduct)
+        } catch (error) {
+            return res.status(400).send(error)
+        }
+    }
+    else {
+        return res.status(400).send({ total: 0 })
+    }
+}
+
 module.exports = {
     getAllUsersInfo, getSingleUserInfo,
     getUserCart, getUserWishlist,
     getUserReview, deleteUserReview,
     deleteUserCartItem, deleteUserWishlistItem,
-    updateProductDetails, userPaymentDetails, addProduct, deleteProduct
+    updateProductDetails, userPaymentDetails, addProduct, deleteProduct, getProducts
 }

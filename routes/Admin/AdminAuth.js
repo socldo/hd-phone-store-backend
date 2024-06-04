@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const authAdmin = require("../../middleware/authAdmin");
 const { body, validationResult } = require('express-validator');
 const dotenv = require('dotenv');
-const { getAllUsersInfo, getSingleUserInfo, getUserCart, getUserWishlist, getUserReview, deleteUserReview, deleteUserCartItem, deleteUserWishlistItem, updateProductDetails, userPaymentDetails, addProduct, deleteProduct } = require('../../controller/AdminControl');
+const { getAllUsersInfo, getSingleUserInfo, getUserCart, getUserWishlist, getUserReview, deleteUserReview, deleteUserCartItem, deleteUserWishlistItem, updateProductDetails, userPaymentDetails, addProduct, deleteProduct , getProducts} = require('../../controller/AdminControl');
 const { chartData } = require('../../controller/AllProductInfo');
 dotenv.config()
 
@@ -20,6 +20,7 @@ router.get('/getwishlist/:userId', authAdmin, getUserWishlist);
 router.get('/getreview/:userId', authAdmin, getUserReview);
 router.get('/getorder/:id', authAdmin, userPaymentDetails);
 router.get('/chartdata', chartData);
+router.get('/getProducts', getProducts);
 
 router.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
@@ -74,6 +75,7 @@ router.post('/register', [
 
 
 ], async (req, res) => {
+    console.log(req);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
 
@@ -119,7 +121,6 @@ router.post('/register', [
     }
 })
 router.post('/addproduct', authAdmin, addProduct);
-
 
 
 router.put('/updateproduct/:id', authAdmin, updateProductDetails)

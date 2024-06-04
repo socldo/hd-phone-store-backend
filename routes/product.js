@@ -26,9 +26,11 @@ router.get('/fetchproduct/:id', async (req, res) => {
 })
 // to get products for single category
 router.post('/fetchproduct/type', async (req, res) => {
+    console.log(req.body);
     const { userType } = req.body
     try {
-        const product = await Product.find({ type: userType })
+        console.log(userType);
+        const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i') });
         res.send(product)
     } catch (error) {
         res.status(500).send("Something went wrong")
