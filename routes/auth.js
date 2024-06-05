@@ -30,12 +30,12 @@ router.post('/register', [
         
         return res.status(400).json({ error: errors.array() })
     }
-    const { firstName, lastName, email, phoneNumber, password,isAdmin } = req.body
+    const { firstName, lastName, email, phoneNumber, password,isAdmin, isPartner } = req.body
 
     try {
         let user = await User.findOne({ $or: [{ email: email }, { phoneNumber: phoneNumber }] });
         if (user) {
-            return res.status(400).send({ error: "Sorry a user already exists" })
+            return res.status(400).send({ error: "Email hoặc số điện thoại đã tồn tại!" })
         }
 
         // password hashing
@@ -49,7 +49,8 @@ router.post('/register', [
             email,
             phoneNumber,
             password: secPass,
-            isAdmin
+            isAdmin,
+            isPartner
         })
         const data = {
             user: {
@@ -71,8 +72,8 @@ router.post('/register', [
 // login Route
 router.post('/login', [
 
-    body('email', 'Enter a valid email').isEmail(),
-    body('password', 'Password cannot be blank').exists(),
+    body('email', 'Email không hợp lệ').isEmail(),
+    body('password', 'Password không được để trống').exists(),
 
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -85,11 +86,11 @@ router.post('/login', [
         let user = await User.findOne({ email });
         if (!user) {
 
-            return res.status(400).send({ success, error: "User not found" })
+            return res.status(400).send({ success, error: "Không tìm thấy tài khoản" })
         }
         const passComp = await bcrypt.compare(password, user.password)
         if (!passComp) {
-            return res.status(400).send({ success, error: "Please try to login with correct credentials" })
+            return res.status(400).send({ success, error: "Sai thông tin tài khoản" })
         }
 
         const data = {
@@ -137,7 +138,7 @@ router.put('/updateuser', authUser, async (req, res) => {
             res.status(200).send({ success })
         }
         else {
-            return res.status(400).send("User Not Found")
+            return res.status(400).send("Không tìm thấy tài khoản này")
         }
     } catch (error) {
         res.send("Something went wrong")

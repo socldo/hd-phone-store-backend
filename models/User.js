@@ -39,7 +39,10 @@ const UserSchema = new Schema({
     },
     userState: {
         type: String
-    }
-
+    },
+    isPartner:{
+        default:false,
+        type:Boolean
+    },
 }, { timestamps: true });
 module.exports = mongoose.model('user', UserSchema)
