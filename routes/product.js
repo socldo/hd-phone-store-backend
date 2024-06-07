@@ -18,7 +18,7 @@ router.get('/fetchproduct', async (req, res) => {
 router.get('/fetchproduct/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
-        
+
         res.send(product)
     } catch (error) {
         res.status(500).send("Something went wrong")
@@ -27,12 +27,13 @@ router.get('/fetchproduct/:id', async (req, res) => {
 // to get products for single category
 router.post('/fetchproduct/type', async (req, res) => {
     console.log(req.body);
-    const { userType } = req.body
+    const { userType, status } = req.body
     try {
-        console.log(userType);
-        const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i') });
+        console.log({ type: new RegExp(`^${userType}$`, 'i') });
+        const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i'), status: status });
         res.send(product)
     } catch (error) {
+        console.log(1);
         res.status(500).send("Something went wrong")
     }
 })
@@ -64,6 +65,27 @@ router.post('/fetchproduct/category', async (req, res) => {
             const product = await Product.find({ type: userType, category: userCategory })
             res.send(product)
         }
+    } catch (error) {
+        res.status(500).send("Something went wrong")
+    }
+})
+
+
+// to get products for single category
+router.post('/change-status', async (req, res) => {
+    const { id, status } = req.body
+    try {
+        const product = await Product.findById(id)
+        if (!product) {
+            return res.status(404).send("Product not found");
+        }
+        console.log(product);
+
+        product.status = status;
+        await product.save(product);
+        console.log(product);
+
+        res.send(true)
     } catch (error) {
         res.status(500).send("Something went wrong")
     }

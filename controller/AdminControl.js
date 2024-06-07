@@ -108,7 +108,6 @@ const deleteUserCartItem = async (req, res) => {
 }
 const deleteUserWishlistItem = async (req, res) => {
     const { id } = req.params;
-    console.log(id);
     try {
         let deleteCart = await Wishlist.findByIdAndDelete(id)
         success = true
@@ -160,13 +159,13 @@ const userPaymentDetails = async (req, res) => {
 }
 
 const addProduct = async (req, res) => {
-    const { name, brand, price, category, image, rating, type, author, description } = req.body;
+    const { name, brand, price, category, image, rating, type, author, description, userId, status } = req.body;
     try {
         let productFindOne = await Product.find({ name: name });
         if (productFindOne.id) {
             return res.status(400).json({ message: "Sản phẩm đã tồn tại" });
         }
-        await Product.create({ name, brand, price, category, image, rating, type, author, description })
+        await Product.create({ name, brand, price, category, image, rating, type, author, description, userId, status })
         success = true
         res.send(success)
 
@@ -195,7 +194,8 @@ const deleteProduct = async (req, res) => {
 
 
 const getProducts = async (req, res) => {
-    const findProduct = await Product.find()
+    const { userId } = req.params;
+    const findProduct = await Product.find({ userId: userId })
     if (findProduct) {
         try {
             res.send(findProduct)
