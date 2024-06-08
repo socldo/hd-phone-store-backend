@@ -120,7 +120,7 @@ router.get('/getuser', authUser, async (req, res) => {
 
 
     } catch (error) {
-        res.status(400).send("Something went wrong")
+        res.status(400).send("Có gì đó sai sai")
     }
 }
 )
@@ -141,7 +141,7 @@ router.put('/updateuser', authUser, async (req, res) => {
             return res.status(400).send("Không tìm thấy tài khoản này")
         }
     } catch (error) {
-        res.send("Something went wrong")
+        res.send("Có gì đó sai sai")
     }
 })
 

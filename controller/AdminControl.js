@@ -12,7 +12,7 @@ const getAllUsersInfo = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(400).send("Something went wrong")
+        res.status(400).send("Có gì đó sai sai")
     }
 }
 const getSingleUserInfo = async (req, res) => {
@@ -23,7 +23,7 @@ const getSingleUserInfo = async (req, res) => {
             const findUser = await User.findById(userId).select('-password');
             res.send(findUser);
         } catch (error) {
-            res.send("Something went wrong")
+            res.send("Có gì đó sai sai")
         }
     }
     else {
@@ -41,7 +41,7 @@ const getUserCart = async (req, res) => {
                 .populate("user", "name email");
             res.send(findUserCart);
         } catch (error) {
-            res.send("Something went wrong")
+            res.send("Có gì đó sai sai")
         }
     }
     else {
@@ -57,7 +57,7 @@ const getUserWishlist = async (req, res) => {
             const findUserWishlist = await Wishlist.find({ user: userId }).populate("productId")
             res.send(findUserWishlist);
         } catch (error) {
-            res.send("Something went wrong")
+            res.send("Có gì đó sai sai")
         }
     }
     else {
@@ -76,7 +76,7 @@ const getUserReview = async (req, res) => {
                 .populate("user", "firstName lastName");
             res.send(findUserReview);
         } catch (error) {
-            res.send("Something went wrong")
+            res.send("Có gì đó sai sai")
         }
     }
     else {
@@ -91,7 +91,7 @@ const deleteUserReview = async (req, res) => {
         let deleteReview = await Review.findByIdAndDelete(id)
         res.send({ msg: "Review deleted successfully" })
     } catch (error) {
-        res.status(400).send({ msg: "Something went wrong,Please try again letter", error })
+        res.status(400).send({ msg: "Có gì đó sai sai,Please try again letter", error })
     }
 }
 
@@ -103,7 +103,7 @@ const deleteUserCartItem = async (req, res) => {
         success = true
         res.send({ success, msg: "Review deleted successfully" })
     } catch (error) {
-        res.status(400).send({ msg: "Something went wrong,Please try again letter1" })
+        res.status(400).send({ msg: "Có gì đó sai sai,Please try again letter1" })
     }
 }
 const deleteUserWishlistItem = async (req, res) => {
@@ -113,7 +113,7 @@ const deleteUserWishlistItem = async (req, res) => {
         success = true
         res.send({ success, msg: "Review deleted successfully" })
     } catch (error) {
-        res.status(400).send({ msg: "Something went wrong,Please try again letter" })
+        res.status(400).send({ msg: "Có gì đó sai sai,Please try again letter" })
     }
 }
 

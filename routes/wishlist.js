@@ -10,7 +10,7 @@ router.get('/fetchwishlist', authUser, async (req, res) => {
         res.send(wishlistData)
     }
     catch (error) {
-        res.status(500).send("Something went wrong")
+        res.status(500).send("Có gì đó sai sai")
     }
 })
 router.post('/addwishlist', authUser, async (req, res) => {
@@ -29,7 +29,7 @@ router.post('/addwishlist', authUser, async (req, res) => {
         }
     }
     catch (error) {
-        res.status(500).send("Something went wrong")
+        res.status(500).send("Có gì đó sai sai")
     }
 })
 router.delete('/deletewishlist/:id', authUser, async (req, res) => {
@@ -38,7 +38,7 @@ router.delete('/deletewishlist/:id', authUser, async (req, res) => {
         const result = await Wishlist.findByIdAndDelete(id)
         res.send(result)
     } catch (error) {
-        res.status(500).send("Something went wrong")
+        res.status(500).send("Có gì đó sai sai")
     }
 
 
