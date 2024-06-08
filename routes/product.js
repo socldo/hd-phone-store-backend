@@ -11,53 +11,53 @@ router.get('/fetchproduct', async (req, res) => {
     }
     catch (error) {
 
-        res.status(500).send("Something went wrong")
+        res.status(500).send("Có gì đó sai sai")
     }
 })
 // To get Single product
 router.get('/fetchproduct/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
-        
+
         res.send(product)
     } catch (error) {
-        res.status(500).send("Something went wrong")
+        res.status(500).send("Có gì đó sai sai")
     }
 })
 // to get products for single category
 router.post('/fetchproduct/type', async (req, res) => {
-    console.log(req.body);
-    const { userType } = req.body
+    const { userType, status } = req.body
     try {
-        console.log(userType);
-        const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i') });
+        const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i'), status: status });
         res.send(product)
     } catch (error) {
-        res.status(500).send("Something went wrong")
+        console.log(1);
+        res.status(500).send("Có gì đó sai sai")
     }
 })
 // to get products category wise
 router.post('/fetchproduct/category', async (req, res) => {
-    const { userType, userCategory } = req.body
+    const { userType, userCategory, status } = req.body
+    console.log(req.body);
     try {
-        if (userCategory == "all") {
-            const product = await Product.find({ type: userType })
+        if (userCategory == "Tất cả") {
+            const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i'), status: status });
             res.send(product)
         }
-        else if (userCategory == "pricelowtohigh") {
-            const product = await Product.find({ type: userType }).sort({ price: 1 })
+        else if (userCategory == "Giá từ thấp đến cao") {
+            const product = await Product.find({ type: userType, status: status }).sort({ price: 1 })
             res.send(product)
         }
-        else if (userCategory == "pricehightolow") {
-            const product = await Product.find({ type: userType }).sort({ price: -1 })
+        else if (userCategory == "Giá từ cao đến thấp") {
+            const product = await Product.find({ type: userType, status: status }).sort({ price: -1 })
             res.send(product)
         }
-        else if (userCategory == "highrated") {
-            const product = await Product.find({ type: userType }).sort({ rating: -1 })
+        else if (userCategory == "Đánh giá cao") {
+            const product = await Product.find({ type: userType, status: status }).sort({ rating: -1 })
             res.send(product)
         }
-        else if (userCategory == "lowrated") {
-            const product = await Product.find({ type: userType }).sort({ rating: 1 })
+        else if (userCategory == "Đánh giá thấp") {
+            const product = await Product.find({ type: userType, status: status }).sort({ rating: 1 })
             res.send(product)
         }
         else {
@@ -65,7 +65,28 @@ router.post('/fetchproduct/category', async (req, res) => {
             res.send(product)
         }
     } catch (error) {
-        res.status(500).send("Something went wrong")
+        res.status(500).send("Có gì đó sai sai")
+    }
+})
+
+
+// to get products for single category
+router.post('/change-status', async (req, res) => {
+    const { id, status } = req.body
+    try {
+        const product = await Product.findById(id)
+        if (!product) {
+            return res.status(404).send("Không tìm thấy sản phẩm");
+        }
+        console.log(product);
+
+        product.status = status;
+        await product.save(product);
+        console.log(product);
+
+        res.send(true)
+    } catch (error) {
+        res.status(500).send("Có gì đó sai sai")
     }
 })
 // to search products added search filters on frontend so no need to create separate api for this
@@ -94,7 +115,7 @@ router.post('/fetchproduct/category', async (req, res) => {
 //         }
 
 //     } catch (error) {
-//         res.status(400).send("Something went wrong")
+//         res.status(400).send("Có gì đó sai sai")
 //     }
 // })
 

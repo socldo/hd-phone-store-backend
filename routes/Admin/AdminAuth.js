@@ -20,7 +20,7 @@ router.get('/getwishlist/:userId', authAdmin, getUserWishlist);
 router.get('/getreview/:userId', authAdmin, getUserReview);
 router.get('/getorder/:id', authAdmin, userPaymentDetails);
 router.get('/chartdata', chartData);
-router.get('/getProducts', getProducts);
+router.get('/getproducts/:userId', getProducts);
 
 router.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
@@ -120,11 +120,10 @@ router.post('/register', [
         res.status(500).send("Internal server error")
     }
 })
-router.post('/addproduct', authAdmin, addProduct);
-
 
 router.put('/updateproduct/:id', authAdmin, updateProductDetails)
 
+router.post('/addproduct', addProduct);
 
 
 router.delete('/review/:id', authAdmin, deleteUserReview);

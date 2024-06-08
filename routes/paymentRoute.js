@@ -19,7 +19,7 @@ router.get('/getPreviousOrders', authUser, async (req, res) => {
     res.send(data)
   }
   catch (error) {
-    res.status(500).send("Something went wrong")
+    res.status(500).send("Có gì đó sai sai")
   }
 })
 

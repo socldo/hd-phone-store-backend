@@ -890,7 +890,7 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_image_1 .v-
         }
       }
     } catch (error) {
-      return res.status(400).send("Something went wrong")
+      return res.status(400).send("Có gì đó sai sai")
 
     }
   }

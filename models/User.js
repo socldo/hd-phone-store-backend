@@ -11,7 +11,7 @@ const UserSchema = new Schema({
         required: true
     },
     phoneNumber: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },
@@ -39,7 +39,10 @@ const UserSchema = new Schema({
     },
     userState: {
         type: String
-    }
-
+    },
+    isPartner:{
+        default:false,
+        type:Boolean
+    },
 }, { timestamps: true });
 module.exports = mongoose.model('user', UserSchema)

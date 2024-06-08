@@ -22,7 +22,7 @@ router.post("/addcart", authUser, async (req, res) => {
         const { _id, quantity } = req.body;
         const findProduct = await Cart.findOne({ $and: [{ productId: _id }, { user: req.user.id }] })
         if (findProduct) {
-            return res.status(400).json({ msg: "Product already in a cart" })
+            return res.status(400).json({ msg: "Sản phẩm đã tồn tại trong giỏ hàng" })
         }
         else {
             const user = req.header;
