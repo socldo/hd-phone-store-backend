@@ -14,6 +14,7 @@ const chartData = async (req, res) => {
         const payment = await Payment.find();
         const product = await Product.find();
         const review = await Review.find();
+        console.log(review, product, payment, wishlist, cart);
         res.send({ review, product, payment, wishlist, cart });
     } catch (error) {
         res.send(error);

@@ -116,9 +116,6 @@ router.get('/getuser', authUser, async (req, res) => {
         const user = await User.findById(req.user.id).select("-password")
         success = true
         res.send(user)
-        console.log(user.city);
-
-
     } catch (error) {
         res.status(400).send("Có gì đó sai sai")
     }

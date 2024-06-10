@@ -31,14 +31,12 @@ router.post('/fetchproduct/type', async (req, res) => {
         const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i'), status: status });
         res.send(product)
     } catch (error) {
-        console.log(1);
         res.status(500).send("Có gì đó sai sai")
     }
 })
 // to get products category wise
 router.post('/fetchproduct/category', async (req, res) => {
     const { userType, userCategory, status } = req.body
-    console.log(req.body);
     try {
         if (userCategory == "Tất cả") {
             const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i'), status: status });
@@ -78,11 +76,8 @@ router.post('/change-status', async (req, res) => {
         if (!product) {
             return res.status(404).send("Không tìm thấy sản phẩm");
         }
-        console.log(product);
-
         product.status = status;
         await product.save(product);
-        console.log(product);
 
         res.send(true)
     } catch (error) {

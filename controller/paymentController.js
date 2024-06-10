@@ -25,11 +25,11 @@ const checkout = async (req, res) => {
     userData = JSON.parse(userDetails)
 
 
-    const options = {
-      amount: Number(amount * 100),
-      currency: "INR",
-    };
-    const order = await instance.orders.create(options);
+    // const options = {
+    //   amount: Number(amount * 100),
+    //   currency: "INR",
+    // };
+    // const order = await instance.orders.create(options);
 
 
     res.status(200).json({

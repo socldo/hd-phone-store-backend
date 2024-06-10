@@ -1,3 +1,8 @@
+
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+
 const connectToMongo = require('./config');
 const bodyParser = require('body-parser')
 const express = require('express')
@@ -12,6 +17,7 @@ const review = require('./routes/review')
 const paymentRoute = require('./routes/paymentRoute')
 const forgotPassword = require('./routes/forgotPassword')
 const AdminRoute = require('./routes/Admin/AdminAuth')
+const OrderRoute = require('./routes/order')
 const dotenv = require('dotenv');
 const checkOrigin = require('./middleware/apiAuth');
 dotenv.config()
@@ -51,6 +57,19 @@ app.use('/api/admin', AdminRoute)
 app.use('/api', paymentRoute)
 
 app.use('/api/password', forgotPassword)
+
+app.use('/api/order', OrderRoute)
+
+// Thiết lập view engine là EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(port, () => {
     console.log(`E-commerce backend listening at http://localhost:${port}`)

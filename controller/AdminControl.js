@@ -9,7 +9,7 @@ const getAllUsersInfo = async (req, res) => {
     try {
         const data = await User.find().select('-password');
         res.send(data)
-
+        console.log(data);
     } catch (error) {
         console.log(error);
         res.status(400).send("Có gì đó sai sai")
