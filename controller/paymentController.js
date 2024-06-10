@@ -4,6 +4,8 @@ const Payment = require('../models/Payment');
 const Cart = require('../models/Cart');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+const Order = require('../models/Order');
+const Product = require('../models/Product')
 dotenv.config()
 
 
@@ -24,6 +26,31 @@ const checkout = async (req, res) => {
     productInfo = JSON.parse(productDetails)
     userData = JSON.parse(userDetails)
 
+    const productIds = productInfo.map(product => product.productId._id);
+    const cartIds = productInfo.map(product => product._id);
+
+    console.log(productIds);
+
+    // Cập nhật trạng thái của các sản phẩm có id trong mảng productIds thành "Đang bán"
+    Product.updateMany(
+      { _id: { $in: productIds } },  // Điều kiện tìm kiếm
+      { $set: { status: "Đang bán" , customerId: userId} }  // Dữ liệu cập nhật
+    ).then(result => {
+      console.log(`Updated ${result.nModified} products`);
+      // Đóng kết nối sau khi hoàn thành
+      // mongoose.connection.close();
+    }).catch(error => {
+      console.error('Error updating products:', error);
+    });
+
+    Cart.updateMany(
+      { _id: { $in: cartIds } },  // Điều kiện tìm kiếm
+      { $set: { status: "Đã đặt"} }  // Dữ liệu cập nhật
+    ).then(result => {
+      console.log(`Updated ${result.nModified} Cart`);
+    }).catch(error => {
+      console.error('Error updating Cart:', error);
+    });
 
     // const options = {
     //   amount: Number(amount * 100),
@@ -32,9 +59,10 @@ const checkout = async (req, res) => {
     // const order = await instance.orders.create(options);
 
 
+
     res.status(200).json({
       success: true,
-      order
+      // order
     });
 
   } catch (error) {

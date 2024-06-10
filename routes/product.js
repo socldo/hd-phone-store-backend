@@ -14,6 +14,33 @@ router.get('/fetchproduct', async (req, res) => {
         res.status(500).send("Có gì đó sai sai")
     }
 })
+
+router.get('/buyProduct/:id', async (req, res) => {
+    try {
+        const product = await Product.find({ customerId: req.params.id })
+            .populate("customerId", "phoneNumber firstName lastName email")
+            .populate("author", "phoneNumber firstName lastName email");;
+        res.send(product)
+    }
+    catch (error) {
+
+        res.status(500).send("Có gì đó sai sai")
+    }
+})
+
+// Route lấy danh sách sản phẩm có customerId khác null
+router.get('/productOrder', async (req, res) => {
+    try {
+        const products = await Product.find({ _id: req.params.id, customerId: { $ne: null } })
+            .populate("customerId", "phoneNumber firstName lastName email")
+            .populate("author", "phoneNumber firstName lastName email");
+
+        res.send(products);
+    } catch (error) {
+        res.status(500).send("Có gì đó sai sai");
+    }
+});
+
 // To get Single product
 router.get('/fetchproduct/:id', async (req, res) => {
     try {
@@ -28,7 +55,8 @@ router.get('/fetchproduct/:id', async (req, res) => {
 router.post('/fetchproduct/type', async (req, res) => {
     const { userType, status } = req.body
     try {
-        const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i'), status: status });
+        const product = await Product.find({ type: userType, status: status });
+
         res.send(product)
     } catch (error) {
         res.status(500).send("Có gì đó sai sai")
@@ -39,7 +67,7 @@ router.post('/fetchproduct/category', async (req, res) => {
     const { userType, userCategory, status } = req.body
     try {
         if (userCategory == "Tất cả") {
-            const product = await Product.find({ type: new RegExp(`^${userType}$`, 'i'), status: status });
+            const product = await Product.find({ type: userType, status: status });
             res.send(product)
         }
         else if (userCategory == "Giá từ thấp đến cao") {
