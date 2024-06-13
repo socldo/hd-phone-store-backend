@@ -16,6 +16,7 @@ const paymentRoute = require('./routes/paymentRoute');
 const forgotPassword = require('./routes/forgotPassword');
 const AdminRoute = require('./routes/Admin/AdminAuth');
 const OrderRoute = require('./routes/order');
+const ReportRouter = require('./routes/report');
 const dotenv = require('dotenv');
 const checkOrigin = require('./middleware/apiAuth');
 const cors = require('cors');
@@ -49,6 +50,7 @@ app.use('/api/admin', AdminRoute);
 app.use('/api', paymentRoute);
 app.use('/api/password', forgotPassword);
 app.use('/api/order', OrderRoute);
+app.use('/api/report', ReportRouter);
 
 // Thiết lập view engine là EJS
 app.set('view engine', 'ejs');
