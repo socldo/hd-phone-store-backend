@@ -13,7 +13,8 @@ const reportSchema = new Schema({
     },
     message: { type: String, required: true },
     type: { type: String, required: true },
-    imagePath: { type: String, required: false }
+    imagePath: { type: String, required: false },
+    createdAt: Date
 });
 
 const Report = mongoose.model('report', reportSchema);

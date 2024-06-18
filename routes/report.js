@@ -28,7 +28,8 @@ router.post('', async (req, res) => {
             productId,
             message,
             type,
-            imagePath: image
+            imagePath: image,
+            createdAt: new Date()
         });
 
         await newReport.save();
