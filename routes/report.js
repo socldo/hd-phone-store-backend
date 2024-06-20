@@ -53,4 +53,16 @@ router.get('/getReport', async (req, res) => {
     }
 });
 
+
+router.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(id, 'id');
+    try {
+        const report = await Report.deleteMany({_id: id});
+        res.send("Xóa thành công");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal server error");
+    }
+});
 module.exports = router;
