@@ -13,13 +13,14 @@ const chartData = async (req, res) => {
         const wishlist = await Wishlist.find().populate("productId");
 
         const payment = await Payment.find();
+        const user = await User.find({isAdmin: 0});
         const product = await Product.find();
         const review = await Review.find();
         const report = await Report.find()
             .populate("productId", "name price image rating type status userId author")
             .populate("userId", "firstName lastName email phone");;
         console.log(review, product, payment, wishlist, cart);
-        res.send({ review, product, payment, wishlist, cart, report });
+        res.send({ review, product, payment, wishlist, cart, report, user });
     } catch (error) {
         res.send(error);
 
