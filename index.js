@@ -18,11 +18,19 @@ dotenv.config()
 
 connectToMongo();
 
-const port = 5000
+const port = 5000;
 
 const app = express()
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({
+    limit: '20mb'
+}));
+
+app.use(bodyParser.urlencoded({
+    limit: '20mb',
+    parameterLimit: 100000,
+    extended: true
+}));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: true }))
 
