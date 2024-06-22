@@ -165,7 +165,7 @@ const addProduct = async (req, res) => {
         if (productFindOne.id) {
             return res.status(400).json({ message: "Sản phẩm đã tồn tại" });
         }
-        await Product.create({ name, brand, price, category, image, rating, type, author, description, userId, status })
+        await Product.create({ name, brand, price, category, image , rating, type, author, description, userId, status })
         success = true
         res.send(success)
 
