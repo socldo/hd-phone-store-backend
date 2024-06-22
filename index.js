@@ -22,7 +22,9 @@ const port = 5000
 
 const app = express()
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({
+    limit : '2mb',
+}))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: true }))
 
