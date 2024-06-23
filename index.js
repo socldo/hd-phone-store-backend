@@ -30,7 +30,7 @@ const port = 5000;
 
 
 connectToMongo();
-
+const app = express();
 app.use(bodyParser.json({
     limit: '20mb'
 }));
@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: true }))
 
-const app = express();
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
