@@ -23,12 +23,25 @@ const cors = require('cors');
 const Message = require('./models/Message');
 dotenv.config();
 
+
 const http = require('http');
 const socketIo = require('socket.io');
+const port = 5000;
+
 
 connectToMongo();
 
-const port = 5000;
+app.use(bodyParser.json({
+    limit: '20mb'
+}));
+
+app.use(bodyParser.urlencoded({
+    limit: '20mb',
+    parameterLimit: 100000,
+    extended: true
+}));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
 
 const app = express();
 
