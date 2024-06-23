@@ -6,20 +6,37 @@ const authUser = require("../middleware/authUser");
 // get all cart products
 router.get("/fetchcart", authUser, async (req, res) => {
     try {
-        const cart = await Cart.find({ user: req.user.id })
-            .populate("productId", "name price image rating type")
-            .populate("user", "name email");
+        console.log('user', req.user.id);
+        const cart = await Cart.find({ user : req.user.id, status: { $ne: 'Đã đặt' }  })
+            .populate("productId", "name price image rating type status userId author")
+            .populate("user", "name email")
+            .populate("author", "name email");
+        res.send(cart);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal server error");
+    }
+});
+
+//
+router.get("/orderedProduct/:id", authUser, async (req, res) => {
+    console.log(req.params.id);
+    try {
+        const cart = await Cart.find({ productId: req.params.id, status: 'Đã đặt' })
+            .populate("productId", "name price image rating type status userId author")
+            .populate("user", "lastName firstName phoneNumber email")
+            .populate("author", "name email");
         res.send(cart);
     } catch (error) {
         res.status(500).send("Internal server error");
     }
 });
 
-// add to cart
 
+// add to cart
 router.post("/addcart", authUser, async (req, res) => {
     try {
-        const { _id, quantity } = req.body;
+        const { _id, quantity, author} = req.body;
         const findProduct = await Cart.findOne({ $and: [{ productId: _id }, { user: req.user.id }] })
         if (findProduct) {
             return res.status(400).json({ msg: "Sản phẩm đã tồn tại trong giỏ hàng" })
@@ -29,7 +46,9 @@ router.post("/addcart", authUser, async (req, res) => {
             const cart = new Cart({
                 user: req.user.id,
                 productId: _id,
-                quantity,
+                quantity: 1,
+                status: 'Đang bán',
+                author: author
             });
             const savedCart = await cart.save();
             res.send(savedCart);

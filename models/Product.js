@@ -8,10 +8,17 @@ const ProductSchema = new Schema({
     image: [],
     rating: Number,
     type: String,
-    author: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    },
     description: String,
     userId: String,
-    status: String,
+    customerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    status : String
 })
 
 module.exports = mongoose.model("product", ProductSchema)

@@ -11,7 +11,12 @@ const CartSchema = new Schema({
     },
     quantity: {
         type: Number
-    }
+    },
+    status: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    },
 
 }, { timestamps: true })
 
