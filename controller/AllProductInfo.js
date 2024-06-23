@@ -10,11 +10,11 @@ const chartData = async (req, res) => {
     try {
         const cart = await Cart.find().populate("productId");
         const wishlist = await Wishlist.find().populate("productId");
-
+        const user = await User.find();
         const payment = await Payment.find();
         const product = await Product.find();
         const review = await Review.find();
-        res.send({ review, product, payment, wishlist, cart });
+        res.send({ review, product, payment, wishlist, cart, user });
     } catch (error) {
         res.send(error);
 
